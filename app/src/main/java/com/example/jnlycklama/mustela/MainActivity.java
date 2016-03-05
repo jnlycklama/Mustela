@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,14 +15,18 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.microsoft.azure.storage.*;
 import com.microsoft.azure.storage.blob.*;
-import com.microsoft.azure.*;
+import com.microsoft.windowsazure.mobileservices.*;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.table.TableOperationCallback;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.MalformedURLException;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -109,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
             // Output the stack trace.
             e.printStackTrace();
         }
+
 
 
     }

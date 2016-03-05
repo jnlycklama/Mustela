@@ -1,7 +1,6 @@
 package com.example.jnlycklama.mustela;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,7 +21,6 @@ import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -56,13 +54,7 @@ public class PictureActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); */
 
         try{
-            if (Camera.getNumberOfCameras() >= 2) {
-
-                //if you want to open front facing camera use this line
-                mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
-
-            }
-            //mCamera = Camera.open();//you can use open(int) to use different cameras
+            mCamera = Camera.open();//you can use open(int) to use different cameras
         } catch (Exception e){
             Log.d("ERROR", "Failed to get camera: " + e.getMessage());
         }
@@ -98,7 +90,6 @@ public class PictureActivity extends AppCompatActivity {
     Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-
             File pictureFile = getOutputMediaFile();
             if (pictureFile == null) {
                 System.out.println("no pic");
@@ -109,19 +100,18 @@ public class PictureActivity extends AppCompatActivity {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
-                runBlobGettingStartedSample(pictureFile);
-            }catch(FileNotFoundException e){
+                Log.d("juliesmells", "jesus pleasus");
+                runBlobGettingStartedSample();
+            } catch (FileNotFoundException e) {
 
-            }catch (IOException e){
-
+            } catch (IOException e) {
             }
-
         }
     };
 
-    public void runBlobGettingStartedSample(File pic) {
+    public void runBlobGettingStartedSample() {
         new BlobUploadTask()
-                .execute(pic);
+                .execute(getOutputMediaFile().getPath(),getOutputMediaFile().getName(), null);
     }
 
     private static File getOutputMediaFile() {

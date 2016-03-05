@@ -3,6 +3,7 @@ package com.example.jnlycklama.mustela;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+
 public class CompletedActivity extends AppCompatActivity {
 
     @Override
