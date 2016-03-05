@@ -1,8 +1,10 @@
 package com.example.jnlycklama.mustela;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.media.FaceDetector;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,6 +28,7 @@ public class PictureActivity extends AppCompatActivity {
 
     private Camera c = null;
     private CameraView mCameraView = null;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,29 +140,47 @@ public class PictureActivity extends AppCompatActivity {
             bfo.inPreferredConfig = Bitmap.Config.RGB_565;
             bfo.inScaled = false;
             bfo.inDither = false;
-           // Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, bfo);
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.mypic, bfo);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, bfo);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(270);
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),true);
+            Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pic, bfo);
             if ( bitmap == null) {
                 System.out.println("no pic");
                 return;
             }
             try {
-                int h = bitmap.getHeight();
-                int w = bitmap.getWidth();
+                int h = rotatedBitmap.getHeight();
+                int w = rotatedBitmap.getWidth();
                 int max = 10;
 
                 FaceDetector detector = new FaceDetector(w, h, max);
                 android.media.FaceDetector.Face[] faces = new android.media.FaceDetector.Face[max];
 
-                int facesFound = detector.findFaces(bitmap, faces);
+                int facesFound = detector.findFaces(rotatedBitmap, faces);
                 System.out.println(facesFound + " LOOOOOOOOOOOOOOOOOOOOOOK HEEEEEEEEEEEEEERE");
-                System.out.println(h +"     "+ w);
                 System.out.println("woah");
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-                Log.d("juliesmells", "jesus pleasus");
-                runBlobGettingStartedSample(pictureFile);
+                if(facesFound < 1){
+                    Toast.makeText(context, "No Face Detected, Try Again.", Toast.LENGTH_LONG).show();
+                    Intent intent = getIntent();
+                    camera.release();
+                    startActivity(intent);
+                }
+                else if (facesFound > 1){
+                    Toast.makeText(context, "Multiple Faces Detected, Try Again.", Toast.LENGTH_LONG).show();
+                    Intent intent = getIntent();
+                    camera.release();
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(context, "Success!", Toast.LENGTH_LONG);
+                    FileOutputStream fos = new FileOutputStream(pictureFile);
+                    fos.write(data);
+                    fos.close();
+                    Log.d("juliesmells", "jesus pleasus");
+                    runBlobGettingStartedSample(pictureFile);
+                }
 
             } catch (FileNotFoundException e) {
 

@@ -11,8 +11,8 @@
 
         <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
             android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/mustela_logo_trans"
             android:title="" app:popupTheme="@style/AppTheme" />
+        <!-- android:background="@drawable/mustela_logo_trans"-->
 
         <!--<ImageView
             android:layout_width="fill_parent"
