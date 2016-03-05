@@ -16,7 +16,9 @@ tools:context="com.example.jnlycklama.mustela.PictureActivity">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Take Picture"
+        android:text="Capture"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorAccent"
         android:id="@+id/button_pic"
         android:layout_gravity="center_horizontal|bottom" />
 </FrameLayout>
