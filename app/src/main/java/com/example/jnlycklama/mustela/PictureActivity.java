@@ -1,16 +1,9 @@
 package com.example.jnlycklama.mustela;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.hardware.camera2.params.Face;
-import android.media.FaceDetector;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +21,6 @@ import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,9 +31,8 @@ import java.util.Date;
 
 public class PictureActivity extends AppCompatActivity {
 
-    private Camera mCamera = null;
+    private Camera c = null;
     private CameraView mCameraView = null;
-    private Context c = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +54,64 @@ public class PictureActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); */
 
         try{
-            mCamera = Camera.open();//you can use open(int) to use different cameras
+            if (Camera.getNumberOfCameras() >= 2) {
+
+                //if you want to open front facing camera use this line
+                c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+
+            }
+            else {
+                try {
+                    // attempt to get a Front Camera instance
+                    c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    System.out
+                            .println("fail to connect to Front Camera");
+                }
+                if (c == null) {
+                    try {
+                        // attempt to get a Back Camera instance
+                        c = Camera.open(1);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        System.out
+                                .println("fail to connect to Camera   with      id   =   1");
+                    }
+                }
+                if (c == null) {
+                    try {
+                        // attempt to get a Back Camera instance
+                        c = Camera.open(0);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        System.out
+                                .println("fail to connect to Camera   with      id   =   0");
+                    }
+                }
+                if (c == null) {
+                    try {
+                        // attempt to get a Back Camera instance
+                        c = Camera.open();
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        System.out
+                                .println("fail to connect to any camera");
+                    }
+                }
+            }
+            //mCamera = Camera.open();//you can use open(int) to use different cameras
         } catch (Exception e){
             Log.d("ERROR", "Failed to get camera: " + e.getMessage());
         }
 
-        if(mCamera != null) {
-            mCameraView = new CameraView(this, mCamera);//create a SurfaceView to show camera data
+        if(c != null) {
+            mCameraView = new CameraView(this, c);//create a SurfaceView to show camera data
             FrameLayout camera_view = (FrameLayout)findViewById(R.id.camera_view);
             camera_view.addView(mCameraView);//add the SurfaceView to the layout
+        }
+        else{
+            Log.d("I THINK", "NOOOOOOOO");
         }
 
         //btn to close the application
@@ -89,7 +128,7 @@ public class PictureActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                mCamera.takePicture(null, null, mPicture);
+                c.takePicture(null, null, mPicture);
                 Intent intent = new Intent(PictureActivity.this, CompletedActivity.class);
                 startActivity(intent);
 
@@ -100,22 +139,7 @@ public class PictureActivity extends AppCompatActivity {
     Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            File pictureFile = getOutputMediaFile();/**
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), options);
-            ByteArrayOutputStream blob = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 0 /*ignored for PNG, blob);
-            byte[] bitmapdata = blob.toByteArray();
-            //pictureFile.setImageBitmap(bitmap);
-            int h = bitmap.getHeight();
-            int w = bitmap.getWidth();
-            int max = 10;
-
-            FaceDetector detector = new FaceDetector(w, h, max);
-            android.media.FaceDetector.Face[] faces = new android.media.FaceDetector.Face[max];
-            int c = detector.findFaces(bitmap, faces);*/
-
+            File pictureFile = getOutputMediaFile();
             if (pictureFile == null) {
                 System.out.println("no pic");
                 return;
@@ -126,7 +150,7 @@ public class PictureActivity extends AppCompatActivity {
                 fos.write(data);
                 fos.close();
                 Log.d("juliesmells", "jesus pleasus");
-                runBlobGettingStartedSample();
+                runBlobGettingStartedSample(pictureFile);
             } catch (FileNotFoundException e) {
 
             } catch (IOException e) {
@@ -134,9 +158,9 @@ public class PictureActivity extends AppCompatActivity {
         }
     };
 
-    public void runBlobGettingStartedSample() {
+    public void runBlobGettingStartedSample(File pic) {
         new BlobUploadTask()
-                .execute(getOutputMediaFile().getPath(),getOutputMediaFile().getName(), null);
+                .execute(pic, null, null);
     }
 
     private static File getOutputMediaFile() {

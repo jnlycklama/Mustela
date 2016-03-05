@@ -73,9 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
-        Button button=(Button) v;
         Intent intent = new Intent(this, PictureActivity.class);
         startActivity(intent);
+        //Button button=(Button) v;
+        //setContentView(R.layout.activity_picture);
     }
 
     // Define the connection-string with your values
