@@ -184,12 +184,12 @@ public class PictureActivity extends AppCompatActivity {
             }
         }
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-                .format(new Date());
+       // String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+               // .format(new Date());
         File mediaFile;
         System.out.println("Path: "+mediaStorageDir.getPath());
         mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + timeStamp + ".jpg");
+                + MainActivity.getText() + ".jpg");
 
         System.out.println("File name"+mediaFile.getName());
         return mediaFile;
