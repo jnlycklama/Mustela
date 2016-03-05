@@ -1,5 +1,6 @@
 package com.example.jnlycklama.mustela;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -73,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
         Button button=(Button) v;
-        setContentView(R.layout.activity_picture);
+        Intent intent = new Intent(this, PictureActivity.class);
+        startActivity(intent);
     }
 
     // Define the connection-string with your values

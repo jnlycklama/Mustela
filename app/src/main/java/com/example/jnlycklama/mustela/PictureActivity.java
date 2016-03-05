@@ -1,9 +1,16 @@
 package com.example.jnlycklama.mustela;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.hardware.camera2.params.Face;
+import android.media.FaceDetector;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +29,7 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,6 +42,7 @@ public class PictureActivity extends AppCompatActivity {
 
     private Camera mCamera = null;
     private CameraView mCameraView = null;
+    private Context c = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +100,22 @@ public class PictureActivity extends AppCompatActivity {
     Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            File pictureFile = getOutputMediaFile();
+            File pictureFile = getOutputMediaFile();/**
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), options);
+            ByteArrayOutputStream blob = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 0 /*ignored for PNG, blob);
+            byte[] bitmapdata = blob.toByteArray();
+            //pictureFile.setImageBitmap(bitmap);
+            int h = bitmap.getHeight();
+            int w = bitmap.getWidth();
+            int max = 10;
+
+            FaceDetector detector = new FaceDetector(w, h, max);
+            android.media.FaceDetector.Face[] faces = new android.media.FaceDetector.Face[max];
+            int c = detector.findFaces(bitmap, faces);*/
+
             if (pictureFile == null) {
                 System.out.println("no pic");
                 return;
