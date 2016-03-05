@@ -31,7 +31,7 @@ import java.util.Date;
 
 public class PictureActivity extends AppCompatActivity {
 
-    private Camera mCamera = null;
+    private Camera c = null;
     private CameraView mCameraView = null;
 
     @Override
@@ -57,18 +57,61 @@ public class PictureActivity extends AppCompatActivity {
             if (Camera.getNumberOfCameras() >= 2) {
 
                 //if you want to open front facing camera use this line
-                mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
 
+            }
+            else {
+                try {
+                    // attempt to get a Front Camera instance
+                    c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    System.out
+                            .println("fail to connect to Front Camera");
+                }
+                if (c == null) {
+                    try {
+                        // attempt to get a Back Camera instance
+                        c = Camera.open(1);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        System.out
+                                .println("fail to connect to Camera   with      id   =   1");
+                    }
+                }
+                if (c == null) {
+                    try {
+                        // attempt to get a Back Camera instance
+                        c = Camera.open(0);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        System.out
+                                .println("fail to connect to Camera   with      id   =   0");
+                    }
+                }
+                if (c == null) {
+                    try {
+                        // attempt to get a Back Camera instance
+                        c = Camera.open();
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        System.out
+                                .println("fail to connect to any camera");
+                    }
+                }
             }
             //mCamera = Camera.open();//you can use open(int) to use different cameras
         } catch (Exception e){
             Log.d("ERROR", "Failed to get camera: " + e.getMessage());
         }
 
-        if(mCamera != null) {
-            mCameraView = new CameraView(this, mCamera);//create a SurfaceView to show camera data
+        if(c != null) {
+            mCameraView = new CameraView(this, c);//create a SurfaceView to show camera data
             FrameLayout camera_view = (FrameLayout)findViewById(R.id.camera_view);
             camera_view.addView(mCameraView);//add the SurfaceView to the layout
+        }
+        else{
+            Log.d("I THINK", "NOOOOOOOO");
         }
 
         //btn to close the application
@@ -85,7 +128,7 @@ public class PictureActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                mCamera.takePicture(null, null, mPicture);
+                c.takePicture(null, null, mPicture);
                 Intent intent = new Intent(PictureActivity.this, CompletedActivity.class);
                 startActivity(intent);
 
