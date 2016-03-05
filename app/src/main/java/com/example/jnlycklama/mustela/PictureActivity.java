@@ -14,8 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -72,7 +79,6 @@ public class PictureActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 mCamera.takePicture(null, null, mPicture);
-
                 Intent intent = new Intent(PictureActivity.this, CompletedActivity.class);
                 startActivity(intent);
 
@@ -93,12 +99,19 @@ public class PictureActivity extends AppCompatActivity {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
+                Log.d("juliesmells", "jesus pleasus");
+                runBlobGettingStartedSample();
             } catch (FileNotFoundException e) {
 
             } catch (IOException e) {
             }
         }
     };
+
+    public void runBlobGettingStartedSample() {
+        new BlobUploadTask()
+                .execute(getOutputMediaFile().getPath(),getOutputMediaFile().getName(), null);
+    }
 
     private static File getOutputMediaFile() {
         File mediaStorageDir = new File(
@@ -119,7 +132,16 @@ public class PictureActivity extends AppCompatActivity {
         mediaFile = new File(mediaStorageDir.getPath() + File.separator
                 + "IMG_" + timeStamp + ".jpg");
 
+        System.out.println("File name"+mediaFile.getName());
         return mediaFile;
     }
+
+    // Define the connection-string with your values
+    public static final String storageConnectionString =
+            "DefaultEndpointsProtocol=https;AccountName=mustelastorage;AccountKey=eIPq/9Auo89l22PMITENnhHWEVGCav/s1QMm+e8xGbD/kilKkRRgzAaVqjfjT/Zm6lmSZ5zbRRN7hVuNN4DiGA==;BlobEndpoint=https://mustelastorage.blob.core.windows.net/;TableEndpoint=https://mustelastorage.table.core.windows.net/;QueueEndpoint=https://mustelastorage.queue.core.windows.net/;FileEndpoint=https://mustelastorage.file.core.windows.net/";
+            /*"DefaultEndpointsProtocol=http;" +
+                    "AccountName=mustelastorage;" +
+                    "AccountKey=eIPq/9Auo89l22PMITENnhHWEVGCav/s1QMm+e8xGbD/kilKkRRgzAaVqjfjT/Zm6lmSZ5zbRRN7hVuNN4DiGA==";*/
+
 
 }
