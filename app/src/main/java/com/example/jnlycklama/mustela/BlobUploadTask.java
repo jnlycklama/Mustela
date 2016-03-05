@@ -1,19 +1,25 @@
 package com.example.jnlycklama.mustela;
 
+import android.hardware.Camera;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.util.Log;
 import android.widget.TextView;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.blob.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * This sample illustrates basic usage of the various Blob Primitives provided
  * in the Storage Client Library including CloudBlobContainer, CloudBlockBlob
  * and CloudBlobClient.
  */
-public class BlobUploadTask extends AsyncTask<String, String, Void> {
+public class BlobUploadTask extends AsyncTask<File, Void, Void> {
 
     public static final String storageConnectionString =
             "DefaultEndpointsProtocol=https;" +
@@ -22,7 +28,7 @@ public class BlobUploadTask extends AsyncTask<String, String, Void> {
 
 
     @Override
-    protected Void doInBackground(String... arg0) {
+    protected Void doInBackground(File... arg0) {
         try {
             // Retrieve storage account from connection-string.
             CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
@@ -39,12 +45,10 @@ public class BlobUploadTask extends AsyncTask<String, String, Void> {
 
             // Define the path to a local file.
             //final String filePath = getOutputMediaFile().getPath() + "IMG_20160305_031107.jpg";
-
-            final String filePath = arg0[0];
+            final String filePath = arg0[0].getPath();
             // Create or overwrite the "myimage.jpg" blob with contents from a local file.
-            CloudBlockBlob blob = container.getBlockBlobReference(arg0[1]);
-            File source = new File(filePath);
-            blob.upload(new FileInputStream(source), source.length());
+            CloudBlockBlob blob = container.getBlockBlobReference(arg0[0].getName());
+            blob.upload(new FileInputStream(arg0[0]), arg0[0].length());
             System.out.println("yo");
         } catch (Exception e) {
             // Output the stack trace.
@@ -52,5 +56,28 @@ public class BlobUploadTask extends AsyncTask<String, String, Void> {
         }
 
         return null;
+    }
+
+    private static File getOutputMediaFile() {
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                "MyCameraApp");
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                .format(new Date());
+        File mediaFile;
+        System.out.println("Path: "+mediaStorageDir.getPath());
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+
+        System.out.println("File name"+mediaFile.getName());
+        return mediaFile;
     }
 }
