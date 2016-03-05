@@ -8,6 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.microsoft.azure.storage.*;
+import com.microsoft.azure.storage.blob.*;
+import com.microsoft.azure.*;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,5 +54,44 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // Define the connection-string with your values
+    public static final String storageConnectionString =
+            "DefaultEndpointsProtocol=http;" +
+                    "AccountName=mustelastorage" +
+                    "AccountKey=55447dcd-af8e-4d0b-af2f-ca3d50c0826c";
+
+    public void rileyFunction() {
+        try
+        {
+            // Retrieve storage account from connection-string.
+            CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
+
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
+
+            // Get a reference to a container.
+            // The container name must be lower case
+            CloudBlobContainer container = blobClient.getContainerReference("images");
+
+            // Create the container if it does not exist.
+            container.createIfNotExists();
+
+            // Define the path to a local file.
+            final String filePath = "C:\\myimages\\myimage.jpg";
+
+            // Create or overwrite the "myimage.jpg" blob with contents from a local file.
+            CloudBlockBlob blob = container.getBlockBlobReference("myimage.jpg");
+            File source = new File(filePath);
+            blob.upload(new FileInputStream(source), source.length());
+        }
+        catch (Exception e)
+        {
+            // Output the stack trace.
+            e.printStackTrace();
+        }
+
+
     }
 }
