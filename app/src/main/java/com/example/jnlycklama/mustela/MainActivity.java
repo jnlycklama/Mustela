@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
 
 import com.microsoft.azure.storage.*;
 import com.microsoft.azure.storage.blob.*;
@@ -61,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickGoButton(View v) {
         // Go! Button Click
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(this.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
         Button button=(Button) v;
         setContentView(R.layout.activity_picture);
     }
