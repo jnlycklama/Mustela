@@ -1,28 +1,20 @@
 package com.example.jnlycklama.mustela;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.media.FaceDetector;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.TextView;
-
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -140,17 +132,34 @@ public class PictureActivity extends AppCompatActivity {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             File pictureFile = getOutputMediaFile();
-            if (pictureFile == null) {
+            BitmapFactory.Options bfo = new BitmapFactory.Options();
+            bfo.inPreferredConfig = Bitmap.Config.RGB_565;
+            bfo.inScaled = false;
+            bfo.inDither = false;
+           // Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, bfo);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.mypic, bfo);
+            if ( bitmap == null) {
                 System.out.println("no pic");
                 return;
             }
             try {
+                int h = bitmap.getHeight();
+                int w = bitmap.getWidth();
+                int max = 10;
+
+                FaceDetector detector = new FaceDetector(w, h, max);
+                android.media.FaceDetector.Face[] faces = new android.media.FaceDetector.Face[max];
+
+                int facesFound = detector.findFaces(bitmap, faces);
+                System.out.println(facesFound + " LOOOOOOOOOOOOOOOOOOOOOOK HEEEEEEEEEEEEEERE");
+                System.out.println(h +"     "+ w);
                 System.out.println("woah");
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
                 Log.d("juliesmells", "jesus pleasus");
                 runBlobGettingStartedSample(pictureFile);
+
             } catch (FileNotFoundException e) {
 
             } catch (IOException e) {
