@@ -54,7 +54,13 @@ public class PictureActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); */
 
         try{
-            mCamera = Camera.open();//you can use open(int) to use different cameras
+            if (Camera.getNumberOfCameras() >= 2) {
+
+                //if you want to open front facing camera use this line
+                mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+
+            }
+            //mCamera = Camera.open();//you can use open(int) to use different cameras
         } catch (Exception e){
             Log.d("ERROR", "Failed to get camera: " + e.getMessage());
         }
@@ -101,7 +107,7 @@ public class PictureActivity extends AppCompatActivity {
                 fos.write(data);
                 fos.close();
                 Log.d("juliesmells", "jesus pleasus");
-                runBlobGettingStartedSample();
+                runBlobGettingStartedSample(pictureFile);
             } catch (FileNotFoundException e) {
 
             } catch (IOException e) {
@@ -109,9 +115,9 @@ public class PictureActivity extends AppCompatActivity {
         }
     };
 
-    public void runBlobGettingStartedSample() {
+    public void runBlobGettingStartedSample(File pic) {
         new BlobUploadTask()
-                .execute(getOutputMediaFile().getPath(),getOutputMediaFile().getName(), null);
+                .execute(pic, null, null);
     }
 
     private static File getOutputMediaFile() {
