@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.media.FaceDetector;
@@ -25,8 +26,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class PictureActivity extends AppCompatActivity {
+public class PictureActivity extends AppCompatActivity  {
 
     private Camera c = null;
     private CameraView mCameraView = null;
@@ -37,6 +40,13 @@ public class PictureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Zimbabwe");
+            }
+        }, 0, 1000);//put here time 1000 milliseconds=1 second
 
 
         /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -57,6 +67,7 @@ public class PictureActivity extends AppCompatActivity {
 
                 //if you want to open front facing camera use this line
                 c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+
 
             }
             else {
@@ -108,6 +119,7 @@ public class PictureActivity extends AppCompatActivity {
             mCameraView = new CameraView(this, c);//create a SurfaceView to show camera data
             FrameLayout camera_view = (FrameLayout)findViewById(R.id.camera_view);
             camera_view.addView(mCameraView);//add the SurfaceView to the layout
+
         }
         else{
             Log.d("I THINK", "NOOOOOOOO");
@@ -132,6 +144,7 @@ public class PictureActivity extends AppCompatActivity {
             }
         });
     }
+
 
     Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
@@ -196,6 +209,7 @@ public class PictureActivity extends AppCompatActivity {
         }
     };
 
+
     public void runBlobGettingStartedSample(File pic) {
         new BlobUploadTask()
                 .execute(pic, null, null);
@@ -258,6 +272,7 @@ public class PictureActivity extends AppCompatActivity {
         super.onResume();
 
     }
+
     
     // Define the connection-string with your values
     public static final String storageConnectionString =
