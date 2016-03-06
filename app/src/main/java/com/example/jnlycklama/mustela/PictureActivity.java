@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,7 +31,8 @@ public class PictureActivity extends AppCompatActivity {
     private Camera c = null;
     private CameraView mCameraView = null;
     private Context context = this;
-
+    public static String name_two;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,8 +176,12 @@ public class PictureActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(context, "Success!", Toast.LENGTH_LONG);
-                    FileOutputStream fos = new FileOutputStream(pictureFile);
-                    fos.write(data);
+
+                    OutputStream fos;
+                    fos = new FileOutputStream(pictureFile);
+                    rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos);
+                    //fos.write(data);
+                    fos.flush();
                     fos.close();
                     Log.d("juliesmells", "jesus pleasus");
                     runBlobGettingStartedSample(pictureFile);
@@ -206,17 +213,52 @@ public class PictureActivity extends AppCompatActivity {
             }
         }
         // Create a media file name
-       // String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-               // .format(new Date());
+        String timeStamp = String.valueOf(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
+        System.out.println(timeStamp);
         File mediaFile;
         System.out.println("Path: "+mediaStorageDir.getPath());
         mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                + MainActivity.getText() + ".jpg");
+                + LoginCreateActivity.getUsername() + timeStamp + ".jpg");
 
-        System.out.println("File name"+mediaFile.getName());
+        name_two = mediaFile.getName();
+        System.out.println("File name" + mediaFile.getName());
         return mediaFile;
     }
 
+    String name;
+    public static String getBlob(){
+        return name_two;
+    }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Log.d(this.getClass().getName(), "back button pressed");
+            if(c!=null) {
+                c.release();
+            }
+            Intent intent = new Intent(this, MainActivity.class);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+
+        // Release the Camera because we don't need it when paused
+        // and other activities might need to use it.
+        if (c != null) {
+            c = null;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+    
     // Define the connection-string with your values
     public static final String storageConnectionString =
             "DefaultEndpointsProtocol=https;AccountName=mustelastorage;AccountKey=eIPq/9Auo89l22PMITENnhHWEVGCav/s1QMm+e8xGbD/kilKkRRgzAaVqjfjT/Zm6lmSZ5zbRRN7hVuNN4DiGA==;BlobEndpoint=https://mustelastorage.blob.core.windows.net/;TableEndpoint=https://mustelastorage.table.core.windows.net/;QueueEndpoint=https://mustelastorage.queue.core.windows.net/;FileEndpoint=https://mustelastorage.file.core.windows.net/";

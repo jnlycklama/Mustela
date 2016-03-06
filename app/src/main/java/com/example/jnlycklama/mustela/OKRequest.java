@@ -23,16 +23,16 @@ public class OKRequest extends AsyncTask<String, Void, Void> {
                 .add("", "")
                 .build();
         Request request = new Request.Builder()
-                .url("http://13.67.63.91:8080/:"+arg0[0])
+                .url("http://13.67.63.91:8080/"+arg0[0])
                 .post(formBody)
                 .build();
-
         try {
             Response response = client.newCall(request).execute();
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-            System.out.println("???:"+response.body().string());
+            System.out.println("Response: "+response.body().string());
         }catch(IOException e){
-
+            System.out.println("ERROOOOOROR");
+            e.printStackTrace();
         }
 
         return null;

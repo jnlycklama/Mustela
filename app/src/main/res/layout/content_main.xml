@@ -23,6 +23,12 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/linearLayout">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Login"
+            />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -37,17 +43,45 @@
                 android:ems="10"
                 android:hint="username"
                 android:inputType="textPersonName" />
+
         </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/passwordField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lastNameField"
+            android:layout_alignStart="@+id/lastNameField"
+            android:ems="10"
+            android:hint="password"
+            android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/enter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/usernameField"
+            android:layout_below="@+id/passwordField"
+            android:text="Submit"
+            android:layout_marginTop="16dp"/>
 
         <Button
             android:id="@+id/go_button"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/usernameField"
-            android:layout_below="@+id/passwordField"
+            android:layout_below="@+id/enter_button"
             android:onClick="onClickGoButton"
-            android:text="Go!"
-            android:layout_marginTop="16dp"/>
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/colorAccent"
+            android:text="Login With Mustela"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"/>
 
 
     </LinearLayout>

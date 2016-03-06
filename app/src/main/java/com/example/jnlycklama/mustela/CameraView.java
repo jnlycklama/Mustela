@@ -63,4 +63,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback{
         //if you are unsing with more screens, please move this code your activity
        // TODO: We have multiple screens with camera now so probably can remove this later
     }
+
+
 }
