@@ -26,7 +26,7 @@ import java.net.MalformedURLException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static EditText mEdit;
+    //public static EditText mEdit;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +53,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public static String getText(){
-        System.out.println("LOOK HERE SILLY!!!!!!!!!!!!! "+mEdit.getText().toString());
+    /*public static String getText(){
         return mEdit.getText().toString();
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -75,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickGoButton(View v) {
         // Go! Button Click
-        mEdit  = (EditText)findViewById(R.id.usernameField);
+        //mEdit  = (EditText)findViewById(R.id.usernameField);
 
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(this.INPUT_METHOD_SERVICE);
 
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
-        Intent intent = new Intent(this, PictureActivity.class);
+        Intent intent = new Intent(this, LoginCreateActivity.class);
         startActivity(intent);
         //Button button=(Button) v;
         //setContentView(R.layout.activity_picture);

@@ -217,7 +217,7 @@ public class PictureActivity extends AppCompatActivity {
         File mediaFile;
         System.out.println("Path: "+mediaStorageDir.getPath());
         mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                + MainActivity.getText() + ".jpg");
+                + LoginCreateActivity.getUsername() + ".jpg");
 
         System.out.println("File name" + mediaFile.getName());
         return mediaFile;

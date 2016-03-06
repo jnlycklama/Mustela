@@ -25,7 +25,7 @@ public class CompletedActivity extends AppCompatActivity {
         try {
 
             new OKRequest()
-                    .execute(MainActivity.getText(), null, null);
+                    .execute(LoginCreateActivity.getUsername(), null, null);
         }catch (Exception e){
 
         }
