@@ -2,5 +2,5 @@
     <string name="app_name">Mustela</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_picture">PictureActivity</string>
-    <string name="title_activity_login_create">LoginCreateActivity</string>
+    <string name="title_activity_login_create">Login With Mustela</string>
 </resources>
