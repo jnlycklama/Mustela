@@ -13,14 +13,21 @@ tools:context="com.example.jnlycklama.mustela.PictureActivity">
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Capture"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/colorAccent"
         android:id="@+id/button_pic"
-        android:layout_gravity="center_horizontal|bottom" />
+        android:layout_gravity="center_horizontal|bottom" />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/camera_context"
+        android:layout_gravity="center_horizontal|top" />
 </FrameLayout>
 
 <ImageButton

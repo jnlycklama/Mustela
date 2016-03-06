@@ -10,16 +10,12 @@ import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Picture;
-import android.graphics.PointF;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.hardware.Camera;
-import android.hardware.camera2.params.Face;
 import android.media.FaceDetector;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.KeyEvent;
@@ -27,7 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -48,7 +44,6 @@ public class PictureActivity extends AppCompatActivity  {
     private CameraView mCameraView = null;
     private Context context = this;
     public static String name_two;
-    public RectF[] rects = new RectF[10];
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +73,13 @@ public class PictureActivity extends AppCompatActivity  {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); */
 
+        TextView context = (TextView) findViewById(R.id.camera_context);
+        boolean x = LoginCreateActivity.getState();
+        if(x){
+            context.setText("Login");
+        }else{
+            context.setText("Create Account");
+        }
         try{
             if (Camera.getNumberOfCameras() >= 2) {
 
@@ -153,7 +155,7 @@ public class PictureActivity extends AppCompatActivity  {
             }
         });
 
-        Button b = (Button) findViewById(R.id.button_pic);
+        /*Button b = (Button) findViewById(R.id.button_pic);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,7 +163,7 @@ public class PictureActivity extends AppCompatActivity  {
                 c.takePicture(null, null, mPicture);
 
             }
-        });
+        });*/
     }
 
 
@@ -193,21 +195,11 @@ public class PictureActivity extends AppCompatActivity  {
                 SparseArray<FaceDetector.Face> facesTwo = new SparseArray<>(max);
 
                 int facesFound = detector.findFaces(rotatedBitmap, faces);
-                for(int i = 0; i < facesFound; i++){
-                    FaceDetector.Face face = faces[i];
-                    PointF pf = new PointF();
-                    face.getMidPoint(pf);
-                    RectF r = new RectF();
-                    r.left = pf.x - face.eyesDistance() / 2;
-                    r.right = pf.x + face.eyesDistance() / 2;
-                    r.top = pf.y - face.eyesDistance() / 2;
-                    r.bottom = pf.y + face.eyesDistance() / 2;
-                    System.out.println(r.left +" "+ r.right);
-                    rects[i] = r;
-
-
+                for(int i = 0; i < faces.length; i++){
+                    facesTwo.setValueAt(i, faces[i]);
                 }
-
+             //   Canvas canvas = new Canvas();
+               // drawFaceRectangle(canvas, 2, facesTwo);
                 System.out.println(facesFound + " LOOOOOOOOOOOOOOOOOOOOOOK HEEEEEEEEEEEEEERE");
                 System.out.println("woah");
                 if(facesFound < 1){
@@ -224,23 +216,7 @@ public class PictureActivity extends AppCompatActivity  {
                 }
                 else {
                     Toast.makeText(context, "Success!", Toast.LENGTH_LONG);
-                    Thread thread;
-                    thread=  new Thread(){
-                        @Override
-                        public void run(){
-                            try {
-                                synchronized(this){
-                                    wait(1000);
-                                }
-                            }
-                            catch(InterruptedException ex){
-                            }
 
-                            // TODO
-                        }
-                    };
-
-                    thread.start();
                     OutputStream fos;
                     fos = new FileOutputStream(pictureFile);
                     rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos);
@@ -249,6 +225,8 @@ public class PictureActivity extends AppCompatActivity  {
                     fos.close();
                     Log.d("juliesmells", "jesus pleasus");
                     runBlobGettingStartedSample(pictureFile);
+
+                    camera.release();
                     Intent intent = new Intent(PictureActivity.this, CompletedActivity.class);
                     startActivity(intent);
                 }
@@ -325,9 +303,28 @@ public class PictureActivity extends AppCompatActivity  {
         super.onResume();
 
     }
+
+    /**
+     * Draws a rectangle around each detected face
+     */
+    /*
+    private void drawFaceRectangle(Canvas canvas, double scale, SparseArray<FaceDetector.Face> mFaces) {
+        Paint paint = new Paint();
+        paint.setColor(Color.GREEN);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(5);
+
+        for (int i = 0; i < mFaces.size(); ++i) {
+            FaceDetector.Face face = mFaces.valueAt(i);
+            canvas.drawRect((float)(face.getPosition().x * scale),
+                    (float)(face.getPosition().y * scale),
+                    (float)((face.getPosition().x + face.getWidth()) * scale),
+                    (float)((face.getPosition().y + face.getHeight()) * scale),
+                    paint);
+        }
+    }*/
+
     
-
-
     // Define the connection-string with your values
     public static final String storageConnectionString =
             "DefaultEndpointsProtocol=https;AccountName=mustelastorage;AccountKey=eIPq/9Auo89l22PMITENnhHWEVGCav/s1QMm+e8xGbD/kilKkRRgzAaVqjfjT/Zm6lmSZ5zbRRN7hVuNN4DiGA==;BlobEndpoint=https://mustelastorage.blob.core.windows.net/;TableEndpoint=https://mustelastorage.table.core.windows.net/;QueueEndpoint=https://mustelastorage.queue.core.windows.net/;FileEndpoint=https://mustelastorage.file.core.windows.net/";
@@ -335,12 +332,5 @@ public class PictureActivity extends AppCompatActivity  {
                     "AccountName=mustelastorage;" +
                     "AccountKey=eIPq/9Auo89l22PMITENnhHWEVGCav/s1QMm+e8xGbD/kilKkRRgzAaVqjfjT/Zm6lmSZ5zbRRN7hVuNN4DiGA==";*/
 
-    }
 
-
-
-
-
-
-
-
+}
