@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -218,8 +219,17 @@ public class PictureActivity extends AppCompatActivity {
         mediaFile = new File(mediaStorageDir.getPath() + File.separator
                 + MainActivity.getText() + ".jpg");
 
-        System.out.println("File name"+mediaFile.getName());
+        System.out.println("File name" + mediaFile.getName());
         return mediaFile;
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Log.d(this.getClass().getName(), "back button pressed");
+            c.release();
+            Intent intent = new Intent(this, MainActivity.class);
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     // Define the connection-string with your values
