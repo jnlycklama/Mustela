@@ -68,5 +68,8 @@ public class LoginCreateActivity extends AppCompatActivity {
     public static boolean getState(){
         return state;
     }
+    public static void setState(boolean s){
+        state = s;
+    }
 
 }

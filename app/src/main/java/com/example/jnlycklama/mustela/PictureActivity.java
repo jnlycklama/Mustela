@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -52,6 +53,13 @@ public class PictureActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); */
 
+        TextView context = (TextView) findViewById(R.id.camera_context);
+        boolean x = LoginCreateActivity.getState();
+        if(x){
+            context.setText("Login");
+        }else{
+            context.setText("Create Account");
+        }
         try{
             if (Camera.getNumberOfCameras() >= 2) {
 

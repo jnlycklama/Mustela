@@ -10,69 +10,23 @@
     tools:showIn="@layout/activity_login_create"
     tools:context="com.example.jnlycklama.mustela.LoginCreateActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Login or Create Account"
+        android:layout_gravity="center"
+        android:id="@+id/textView" />
 
         <LinearLayout
             android:id="@+id/layout_one"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_alignParentBottom="true">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Login"
-                android:id="@+id/login_text"
-                android:layout_alignParentTop="true"
-                android:layout_alignRight="@+id/button"
-                android:layout_alignEnd="@+id/button" />
-
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Login with Mustela"
-                android:id="@+id/login_button"
-                android:layout_below="@+id/textView2"
-                android:layout_centerHorizontal="true"
-                android:onClick="onClickLogin"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:layout_gravity="center"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Create Account"
-                android:id="@+id/create_text" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="username"
-                android:ems="10"
-                android:id="@+id/input_username"
-                android:layout_gravity="center"/>
-            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -81,19 +35,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
-                    android:hint="password"
+                    android:hint="username"
                     android:ems="10"
-                    android:id="@+id/input_password"
+                    android:id="@+id/input_username"
                     android:layout_gravity="center"/>
             </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Login with Mustela"
+                android:id="@+id/login_button"
+                android:layout_centerHorizontal="true"
+                android:onClick="onClickLogin"
+                android:layout_margin="20dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Create Mustela Account"
                 android:id="@+id/create_button"
-                android:onClick="onClickCreate"/>
+                android:onClick="onClickCreate"
+                android:layout_margin="20dp"/>
         </LinearLayout>
-    </LinearLayout>
+
+
 
 </RelativeLayout>

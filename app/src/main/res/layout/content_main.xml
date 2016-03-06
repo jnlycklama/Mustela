@@ -9,81 +9,94 @@
     <ImageView  xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_height="60dp"
         android:id="@+id/imageView"
         android:layout_marginTop="8dp"
         android:layout_centerHorizontal="true"
         tools:context="com.youthdiversion.calendar.CreateAccount"/>
 
     <LinearLayout
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout">
+        android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Login"
-            />
+            android:orientation="vertical"
+            android:layout_gravity="right"
+            android:id="@+id/linearLayout">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Login"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/usernameField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/lastNameField"
+                    android:layout_alignStart="@+id/lastNameField"
+                    android:ems="10"
+                    android:hint="username"
+                    android:inputType="textPersonName" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/usernameField"
+                android:id="@+id/passwordField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/lastNameField"
                 android:layout_alignStart="@+id/lastNameField"
                 android:ems="10"
-                android:hint="username"
-                android:inputType="textPersonName" />
+                android:hint="password"
+                android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
 
-        </android.support.design.widget.TextInputLayout>
+            <Button
+                android:id="@+id/enter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/usernameField"
+                android:layout_below="@+id/passwordField"
+                android:text="Submit"
+                android:layout_marginTop="16dp"/>
 
-        <android.support.design.widget.TextInputLayout
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/passwordField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/lastNameField"
-            android:layout_alignStart="@+id/lastNameField"
-            android:ems="10"
-            android:hint="password"
-            android:inputType="textPassword" />
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/enter_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/usernameField"
-            android:layout_below="@+id/passwordField"
-            android:text="Submit"
-            android:layout_marginTop="16dp"/>
-
-        <Button
-            android:id="@+id/go_button"
-            android:layout_width="210dp"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/usernameField"
-            android:layout_below="@+id/enter_button"
-            android:onClick="onClickGoButton"
-            android:background="@color/colorPrimaryDark"
-            android:textColor="@color/colorAccent"
-            android:text="Login With Mustela"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center"/>
-
-
+            <Button
+                android:id="@+id/go_button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/usernameField"
+                android:layout_below="@+id/enter_button"
+                android:onClick="onClickGoButton"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/colorAccent"
+                android:text="Login With Mustela"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

@@ -8,6 +8,9 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -17,6 +20,8 @@ import java.io.IOException;
 public class OKRequest extends AsyncTask<String, Void, Void> {
 
     private final OkHttpClient client = new OkHttpClient();
+    private String resp;
+    public static JSONObject r;
 
     protected Void doInBackground(String... arg0) {
         RequestBody formBody = new FormEncodingBuilder()
@@ -29,13 +34,23 @@ public class OKRequest extends AsyncTask<String, Void, Void> {
         try {
             Response response = client.newCall(request).execute();
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-            System.out.println("Response: "+response.body().string());
+            resp = response.body().string();
+            System.out.println("Response: "+resp);
+            try {
+                r = new JSONObject(resp);
+            }catch(JSONException e){
+
+            }
         }catch(IOException e){
             System.out.println("ERROOOOOROR");
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    public static JSONObject getResponse(){
+        return r;
     }
 
 }
