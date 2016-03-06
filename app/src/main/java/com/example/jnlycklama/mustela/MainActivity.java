@@ -122,8 +122,5 @@ public class MainActivity extends AppCompatActivity {
             // Output the stack trace.
             e.printStackTrace();
         }
-
-
-
     }
 }
