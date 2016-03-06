@@ -12,7 +12,10 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -226,10 +229,33 @@ public class PictureActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Log.d(this.getClass().getName(), "back button pressed");
-            c.release();
+            if(c!=null) {
+                c.release();
+            }
             Intent intent = new Intent(this, MainActivity.class);
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+
+        // Release the Camera because we don't need it when paused
+        // and other activities might need to use it.
+        if (c != null) {
+            c.release();
+            c = null;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(c == null)
+            setContentView(R.layout.activity_picture);
+
+
     }
 
     // Define the connection-string with your values
