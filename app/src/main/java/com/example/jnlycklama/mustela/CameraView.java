@@ -61,7 +61,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         //our app has only one screen, so we'll destroy the camera in the surface
         //if you are unsing with more screens, please move this code your activity
-        mCamera.stopPreview();
-        mCamera.release();
+       // TODO: We have multiple screens with camera now so probably can remove this later
     }
 }
