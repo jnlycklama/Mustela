@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -125,8 +126,6 @@ public class PictureActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 c.takePicture(null, null, mPicture);
-                Intent intent = new Intent(PictureActivity.this, CompletedActivity.class);
-                startActivity(intent);
 
             }
         });
@@ -175,11 +174,17 @@ public class PictureActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(context, "Success!", Toast.LENGTH_LONG);
-                    FileOutputStream fos = new FileOutputStream(pictureFile);
-                    fos.write(data);
+
+                    OutputStream fos;
+                    fos = new FileOutputStream(pictureFile);
+                    rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos);
+                    //fos.write(data);
+                    fos.flush();
                     fos.close();
                     Log.d("juliesmells", "jesus pleasus");
                     runBlobGettingStartedSample(pictureFile);
+                    Intent intent = new Intent(PictureActivity.this, CompletedActivity.class);
+                    startActivity(intent);
                 }
 
             } catch (FileNotFoundException e) {

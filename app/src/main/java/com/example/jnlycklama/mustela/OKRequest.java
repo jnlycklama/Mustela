@@ -23,7 +23,7 @@ public class OKRequest extends AsyncTask<String, Void, Void> {
                 .add("", "")
                 .build();
         Request request = new Request.Builder()
-                .url("http://13.67.63.91:8080/:"+arg0[0])
+                .url("http://13.67.63.91:8080/"+arg0[0])
                 .post(formBody)
                 .build();
 

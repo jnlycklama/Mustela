@@ -20,6 +20,7 @@ public class CompletedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_completed);
 
         try {
+
             new OKRequest()
                     .execute(MainActivity.getText(), null, null);
         }catch (Exception e){

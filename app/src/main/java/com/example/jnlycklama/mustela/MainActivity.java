@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static String getText(){
+        System.out.println("LOOK HERE SILLY!!!!!!!!!!!!! "+mEdit.getText().toString());
         return mEdit.getText().toString();
     }
 
