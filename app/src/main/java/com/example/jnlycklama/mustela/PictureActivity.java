@@ -155,7 +155,7 @@ public class PictureActivity extends AppCompatActivity  {
             }
         });
 
-        Button b = (Button) findViewById(R.id.button_pic);
+        /*Button b = (Button) findViewById(R.id.button_pic);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,7 +163,7 @@ public class PictureActivity extends AppCompatActivity  {
                 c.takePicture(null, null, mPicture);
 
             }
-        });
+        });*/
     }
 
 
@@ -225,6 +225,8 @@ public class PictureActivity extends AppCompatActivity  {
                     fos.close();
                     Log.d("juliesmells", "jesus pleasus");
                     runBlobGettingStartedSample(pictureFile);
+
+                    camera.release();
                     Intent intent = new Intent(PictureActivity.this, CompletedActivity.class);
                     startActivity(intent);
                 }

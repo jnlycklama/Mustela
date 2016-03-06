@@ -40,5 +40,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="54dp"
-        android:onClick="onClickBack"/>
+        android:onClick="onClickBack"
+        android:background="@drawable/button"/>
 </RelativeLayout>
