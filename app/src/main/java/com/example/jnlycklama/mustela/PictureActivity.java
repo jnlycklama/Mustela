@@ -4,13 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Picture;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.media.FaceDetector;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -25,9 +32,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class PictureActivity extends AppCompatActivity {
+public class PictureActivity extends AppCompatActivity  {
 
     private Camera c = null;
     private CameraView mCameraView = null;
@@ -38,6 +49,15 @@ public class PictureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (mPicture != null && c != null) {
+                    c.takePicture(null, null, mPicture);
+                }
+            }
+        }, 0, 2000);//put here time 1000 milliseconds=1 second
+
 
 
         /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,7 +86,9 @@ public class PictureActivity extends AppCompatActivity {
                 //if you want to open front facing camera use this line
                 c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
 
+
             }
+
             else {
                 try {
                     // attempt to get a Front Camera instance
@@ -116,10 +138,13 @@ public class PictureActivity extends AppCompatActivity {
             mCameraView = new CameraView(this, c);//create a SurfaceView to show camera data
             FrameLayout camera_view = (FrameLayout)findViewById(R.id.camera_view);
             camera_view.addView(mCameraView);//add the SurfaceView to the layout
+
         }
         else{
             Log.d("I THINK", "NOOOOOOOO");
         }
+
+
 
         //btn to close the application
         ImageButton imgClose = (ImageButton)findViewById(R.id.imgClose);
@@ -140,6 +165,7 @@ public class PictureActivity extends AppCompatActivity {
             }
         });
     }
+
 
     Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
@@ -166,8 +192,14 @@ public class PictureActivity extends AppCompatActivity {
 
                 FaceDetector detector = new FaceDetector(w, h, max);
                 android.media.FaceDetector.Face[] faces = new android.media.FaceDetector.Face[max];
+                SparseArray<FaceDetector.Face> facesTwo = new SparseArray<>(max);
 
                 int facesFound = detector.findFaces(rotatedBitmap, faces);
+                for(int i = 0; i < faces.length; i++){
+                    facesTwo.setValueAt(i, faces[i]);
+                }
+             //   Canvas canvas = new Canvas();
+               // drawFaceRectangle(canvas, 2, facesTwo);
                 System.out.println(facesFound + " LOOOOOOOOOOOOOOOOOOOOOOK HEEEEEEEEEEEEEERE");
                 System.out.println("woah");
                 if(facesFound < 1){
@@ -203,6 +235,7 @@ public class PictureActivity extends AppCompatActivity {
             }
         }
     };
+
 
     public void runBlobGettingStartedSample(File pic) {
         new BlobUploadTask()
@@ -250,6 +283,8 @@ public class PictureActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+
+
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
@@ -257,7 +292,6 @@ public class PictureActivity extends AppCompatActivity {
         // Release the Camera because we don't need it when paused
         // and other activities might need to use it.
         if (c != null) {
-            c.release();
             c = null;
         }
     }
@@ -265,11 +299,29 @@ public class PictureActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if(c == null)
-            setContentView(R.layout.activity_picture);
-
 
     }
+
+    /**
+     * Draws a rectangle around each detected face
+     */
+    /*
+    private void drawFaceRectangle(Canvas canvas, double scale, SparseArray<FaceDetector.Face> mFaces) {
+        Paint paint = new Paint();
+        paint.setColor(Color.GREEN);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(5);
+
+        for (int i = 0; i < mFaces.size(); ++i) {
+            FaceDetector.Face face = mFaces.valueAt(i);
+            canvas.drawRect((float)(face.getPosition().x * scale),
+                    (float)(face.getPosition().y * scale),
+                    (float)((face.getPosition().x + face.getWidth()) * scale),
+                    (float)((face.getPosition().y + face.getHeight()) * scale),
+                    paint);
+        }
+    }*/
+
     
     // Define the connection-string with your values
     public static final String storageConnectionString =
