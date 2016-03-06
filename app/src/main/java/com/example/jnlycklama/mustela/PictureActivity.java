@@ -125,8 +125,6 @@ public class PictureActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 c.takePicture(null, null, mPicture);
-                Intent intent = new Intent(PictureActivity.this, CompletedActivity.class);
-                startActivity(intent);
 
             }
         });
@@ -180,6 +178,8 @@ public class PictureActivity extends AppCompatActivity {
                     fos.close();
                     Log.d("juliesmells", "jesus pleasus");
                     runBlobGettingStartedSample(pictureFile);
+                    Intent intent = new Intent(PictureActivity.this, CompletedActivity.class);
+                    startActivity(intent);
                 }
 
             } catch (FileNotFoundException e) {
