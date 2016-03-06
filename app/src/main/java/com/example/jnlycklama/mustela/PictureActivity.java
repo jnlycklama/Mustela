@@ -244,7 +244,6 @@ public class PictureActivity extends AppCompatActivity {
         // Release the Camera because we don't need it when paused
         // and other activities might need to use it.
         if (c != null) {
-            c.release();
             c = null;
         }
     }
@@ -252,9 +251,6 @@ public class PictureActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if(c == null)
-            setContentView(R.layout.activity_picture);
-
 
     }
 
