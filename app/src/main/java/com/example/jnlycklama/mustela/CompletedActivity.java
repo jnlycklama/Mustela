@@ -13,6 +13,9 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 
 
 public class CompletedActivity extends AppCompatActivity {
@@ -24,10 +27,23 @@ public class CompletedActivity extends AppCompatActivity {
 
         try {
 
+            String input = "create/"+LoginCreateActivity.getUsername()+"/blob/"+PictureActivity.getBlob();
+            System.out.println("First request input: "+input);
             new OKRequest()
-                    .execute(LoginCreateActivity.getUsername(), null, null);
+                    .execute(input, null, null);
         }catch (Exception e){
 
+        }
+        System.out.println("State: "+LoginCreateActivity.getState());
+        if (LoginCreateActivity.getState()){
+            try {
+                //String timeStamp = String.valueOf(new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new java.util.Date());
+                new OKRequest()
+                        .execute("authenticate/" + LoginCreateActivity.getUsername() + "/blob/"+PictureActivity.getBlob(), null, null);
+                System.out.println("hellooooooo");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

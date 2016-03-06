@@ -29,9 +29,10 @@ public class OKRequest extends AsyncTask<String, Void, Void> {
         try {
             Response response = client.newCall(request).execute();
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-            System.out.println("???:"+response.body().string());
+            System.out.println("Response: "+response.body().string());
         }catch(IOException e){
-
+            System.out.println("ERROOOOOROR");
+            e.printStackTrace();
         }
 
         return null;
