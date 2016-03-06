@@ -12,10 +12,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -34,7 +31,8 @@ public class PictureActivity extends AppCompatActivity {
     private Camera c = null;
     private CameraView mCameraView = null;
     private Context context = this;
-
+    public static String name_two;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,16 +213,23 @@ public class PictureActivity extends AppCompatActivity {
             }
         }
         // Create a media file name
-       // String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-               // .format(new Date());
+        String timeStamp = String.valueOf(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
+        System.out.println(timeStamp);
         File mediaFile;
         System.out.println("Path: "+mediaStorageDir.getPath());
         mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                + LoginCreateActivity.getUsername() + ".jpg");
+                + LoginCreateActivity.getUsername() + timeStamp + ".jpg");
 
+        name_two = mediaFile.getName();
         System.out.println("File name" + mediaFile.getName());
         return mediaFile;
     }
+
+    String name;
+    public static String getBlob(){
+        return name_two;
+    }
+    
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
@@ -257,7 +262,7 @@ public class PictureActivity extends AppCompatActivity {
 
 
     }
-
+    
     // Define the connection-string with your values
     public static final String storageConnectionString =
             "DefaultEndpointsProtocol=https;AccountName=mustelastorage;AccountKey=eIPq/9Auo89l22PMITENnhHWEVGCav/s1QMm+e8xGbD/kilKkRRgzAaVqjfjT/Zm6lmSZ5zbRRN7hVuNN4DiGA==;BlobEndpoint=https://mustelastorage.blob.core.windows.net/;TableEndpoint=https://mustelastorage.table.core.windows.net/;QueueEndpoint=https://mustelastorage.queue.core.windows.net/;FileEndpoint=https://mustelastorage.file.core.windows.net/";

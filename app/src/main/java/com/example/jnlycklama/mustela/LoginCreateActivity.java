@@ -13,6 +13,7 @@ import android.widget.EditText;
 public class LoginCreateActivity extends AppCompatActivity {
 
     public static EditText mEdit;
+    public static boolean state;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class LoginCreateActivity extends AppCompatActivity {
     public void onClickCreate(View v) {
         // Go! Button Click
         mEdit  = (EditText)findViewById(R.id.input_username);
+        state = false; //on create account
 
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(this.INPUT_METHOD_SERVICE);
@@ -54,12 +56,17 @@ public class LoginCreateActivity extends AppCompatActivity {
 
     public void onClickLogin(View v) {
         // Go! Button Click
-        //mEdit  = (EditText)findViewById(R.id.usernameField);
+        mEdit  = (EditText)findViewById(R.id.input_username);
+        state = true; // on login account
 
         Intent intent = new Intent(this, PictureActivity.class);
         startActivity(intent);
         //Button button=(Button) v;
         //setContentView(R.layout.activity_picture);
+    }
+
+    public static boolean getState(){
+        return state;
     }
 
 }

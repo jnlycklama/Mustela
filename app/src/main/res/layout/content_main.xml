@@ -80,7 +80,8 @@
             android:background="@color/colorPrimaryDark"
             android:textColor="@color/colorAccent"
             android:text="Login With Mustela"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"/>
 
 
     </LinearLayout>
